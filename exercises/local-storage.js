@@ -40,7 +40,7 @@
 // Your code goes here...
 const cardsContainer = document.querySelector(".cardsContainer");
 
-const toggleElementStatus = (id) => {
+const toggleCardStatus = (id) => {
   const item = document.getElementById(id);
   if (item) {
     if (item.dataset.fav === "true") {
@@ -54,17 +54,17 @@ const toggleElementStatus = (id) => {
 };
 
 const addIdToFavorites = (id) => {
-  toggleElementStatus(id);
-  let storageListRaw = localStorage.getItem("favorites");
-  storageListRaw += `${storageListRaw.length === 0 ? "" : ","}${id}`;
-  localStorage.setItem("favorites", storageListRaw);
+  toggleCardStatus(id);
+  let favoritesList = localStorage.getItem("favorites");
+  favoritesList += `${favoritesList.length === 0 ? "" : ","}${id}`;
+  localStorage.setItem("favorites", favoritesList);
 };
 
 const removeIdFromFavorites = (id) => {
-  toggleElementStatus(id);
-  let storageListRaw = localStorage.getItem("favorites");
-  let storageList = storageListRaw.split(",");
-  let newList = storageList.filter((cardId) => cardId !== id).join(",");
+  toggleCardStatus(id);
+  const favoritesListRaw = localStorage.getItem("favorites");
+  const favoritesArray = favoritesListRaw.split(",");
+  const newList = favoritesArray.filter((cardId) => cardId !== id).join(",");
   localStorage.setItem("favorites", newList);
 };
 
@@ -84,5 +84,5 @@ if (!localStorage.getItem("favorites")) {
 }
 let favorites = localStorage.getItem("favorites").split(",");
 for (const id of favorites) {
-  toggleElementStatus(id);
+  toggleCardStatus(id);
 }
