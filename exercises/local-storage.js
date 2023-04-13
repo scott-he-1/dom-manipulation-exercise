@@ -78,7 +78,7 @@ cardsContainer.addEventListener("click", (e) => {
       setBackgroundOfElement(item.id, "red");
       addIdToFavorite(item.id);
     } else {
-      setBackgroundOfElement(item.id, "white");
+      setBackgroundOfElement(item.id, "");
       removeIdFromFavorite(item.id);
     }
     setFavOfElement(item.id);
