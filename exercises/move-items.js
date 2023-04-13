@@ -45,7 +45,7 @@ const favs = document.getElementById("favs");
 
 // Your code goes here
 const updateCollections = (id, direction) => {
-  const item = document.getElementById(`${id}`);
+  const item = document.getElementById(id);
   const icon = item.firstElementChild.classList;
   if (direction === "toMain") {
     icon.replace("fa-heart-crack", "fa-heart-circle-plus");
@@ -73,8 +73,7 @@ const updateCollections = (id, direction) => {
 // Your code goes here...
 for (const item of allItems) {
   item.addEventListener("click", () => {
-    const parentElmId = item.parentElement.id;
-    const direction = parentElmId === "main" ? "toFavs" : "toMain";
+    const direction = item.parentElement.id === "main" ? "toFavs" : "toMain";
     updateCollections(item.id, direction);
   });
 }

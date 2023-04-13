@@ -37,7 +37,6 @@ const sortBtn = document.querySelectorAll(".sortBtn");
 
 // Your code goes here...
 const sortData = (direction) => {
-  const mainContainer = document.getElementById("main");
   let items = Array.from(allItems);
   const sortCB = (a, b) =>
     a.innerHTML > b.innerHTML ? 1 : a.innerHTML < b.innerHTML ? -1 : 0;
@@ -46,7 +45,7 @@ const sortData = (direction) => {
   } else {
     items = items.sort(sortCB).reverse();
   }
-  items.forEach((item) => mainContainer.append(item));
+  items.forEach((item) => document.getElementById("main").append(item));
 };
 
 /**
@@ -60,7 +59,6 @@ const sortData = (direction) => {
 // Your code goes here...
 for (const btn of sortBtn) {
   btn.addEventListener("click", () => {
-    const direction = btn.dataset.sortdir;
-    sortData(direction);
+    sortData(btn.dataset.sortdir);
   });
 }
