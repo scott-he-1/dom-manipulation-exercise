@@ -40,34 +40,31 @@
 // Your code goes here...
 const cardsContainer = document.querySelector(".cardsContainer");
 
-const setBackgroundOfElement = (id, color) => {
-  const item = document.getElementById(`${id}`);
+const setElement = (id) => {
+  const item = document.getElementById(id);
   if (item) {
-    item.style.backgroundColor = color;
-  }
-};
-
-const setFavOfElement = (id) => {
-  const item = document.getElementById(`${id}`);
-  if (item) {
-    if (item.dataset.fav === "false") {
-      item.dataset.fav = "true";
-    } else {
+    if (item.dataset.fav === "true") {
       item.dataset.fav = "false";
+      item.style.backgroundColor = "";
+    } else {
+      item.dataset.fav = "true";
+      item.style.backgroundColor = "red";
     }
   }
 };
 
-const addIdToFavorite = (id) => {
+const addIdToFavorites = (id) => {
+  setElement(id);
   let storageListRaw = localStorage.getItem("favorites");
   storageListRaw += `${storageListRaw.length === 0 ? "" : ","}${id}`;
   localStorage.setItem("favorites", storageListRaw);
 };
 
-const removeIdFromFavorite = (id) => {
+const removeIdFromFavorites = (id) => {
+  setElement(id);
   let storageListRaw = localStorage.getItem("favorites");
   let storageList = storageListRaw.split(",");
-  let newList = storageList.filter((cardId) => cardId != id).join(",");
+  let newList = storageList.filter((cardId) => cardId !== id).join(",");
   localStorage.setItem("favorites", newList);
 };
 
@@ -75,13 +72,10 @@ cardsContainer.addEventListener("click", (e) => {
   const item = e.target;
   if (item.classList.value === "card") {
     if (item.dataset.fav === "false") {
-      setBackgroundOfElement(item.id, "red");
-      addIdToFavorite(item.id);
+      addIdToFavorites(item.id);
     } else {
-      setBackgroundOfElement(item.id, "");
-      removeIdFromFavorite(item.id);
+      removeIdFromFavorites(item.id);
     }
-    setFavOfElement(item.id);
   }
 });
 
@@ -90,6 +84,5 @@ if (!localStorage.getItem("favorites")) {
 }
 let favorites = localStorage.getItem("favorites").split(",");
 for (const id of favorites) {
-  setBackgroundOfElement(id, "red");
-  setFavOfElement(id);
+  setElement(id);
 }
