@@ -42,34 +42,33 @@ const cardsContainer = document.querySelector(".cardsContainer");
 
 const setBackgroundOfElement = (id, color) => {
   const item = document.getElementById(`${id}`);
-  item.style.backgroundColor = color;
+  if (item) {
+    item.style.backgroundColor = color;
+  }
 };
 
 const setFavOfElement = (id) => {
   const item = document.getElementById(`${id}`);
-  if (item.dataset.fav === "false") {
-    item.dataset.fav = "true";
-  } else {
-    item.dataset.fav = "false";
+  if (item) {
+    if (item.dataset.fav === "false") {
+      item.dataset.fav = "true";
+    } else {
+      item.dataset.fav = "false";
+    }
   }
 };
 
 const addIdToFavorite = (id) => {
-  let localStorageArrayRaw = localStorage.getItem("favorites");
-  let localStorageArray = JSON.parse(localStorageArrayRaw)
-    ? JSON.parse(localStorageArrayRaw)
-    : [];
-  localStorageArray.push(id);
-  localStorage.setItem("favorites", JSON.stringify(localStorageArray));
+  let storageListRaw = localStorage.getItem("favorites");
+  storageListRaw += `${storageListRaw.length === 0 ? "" : ","}${id}`;
+  localStorage.setItem("favorites", storageListRaw);
 };
 
 const removeIdFromFavorite = (id) => {
-  let localStorageArrayRaw = localStorage.getItem("favorites");
-  let localStorageArray = JSON.parse(localStorageArrayRaw)
-    ? JSON.parse(localStorageArrayRaw)
-    : [];
-  localStorageArray.splice(localStorageArray.indexOf(id), 1);
-  localStorage.setItem("favorites", JSON.stringify(localStorageArray));
+  let storageListRaw = localStorage.getItem("favorites");
+  let storageList = storageListRaw.split(",");
+  let newList = storageList.filter((cardId) => cardId != id).join(",");
+  localStorage.setItem("favorites", newList);
 };
 
 cardsContainer.addEventListener("click", (e) => {
@@ -77,21 +76,20 @@ cardsContainer.addEventListener("click", (e) => {
   if (item.classList.value === "card") {
     if (item.dataset.fav === "false") {
       setBackgroundOfElement(item.id, "red");
-      setFavOfElement(item.id);
       addIdToFavorite(item.id);
     } else {
       setBackgroundOfElement(item.id, "white");
-      setFavOfElement(item.id);
       removeIdFromFavorite(item.id);
     }
+    setFavOfElement(item.id);
   }
 });
 
-let storageArrayRaw = localStorage.getItem("favorites");
-let storageArray = JSON.parse(storageArrayRaw)
-  ? JSON.parse(storageArrayRaw)
-  : [];
-for (const id of storageArray) {
+if (!localStorage.getItem("favorites")) {
+  localStorage.setItem("favorites", "");
+}
+let favorites = localStorage.getItem("favorites").split(",");
+for (const id of favorites) {
   setBackgroundOfElement(id, "red");
   setFavOfElement(id);
 }
